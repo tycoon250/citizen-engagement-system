@@ -6,9 +6,18 @@ export const protect = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    req.user = decoded; // Inject user info (id, role)
     next();
   } catch (err) {
-    res.status(403).json({ message: 'Token is invalid or expired' });
+    res.status(403).json({ message: 'Invalid or expired token' });
   }
+};
+
+export const restrictTo = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Access denied: insufficient permissions' });
+    }
+    next();
+  };
 };

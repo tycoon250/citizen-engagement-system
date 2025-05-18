@@ -3,7 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import db from './config/db.js';
+import agencyRoutes from './routes/agency.routes.js';
+import complaintRoutes from './routes/complaint.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+import statsRoutes from './routes/stats.routes.js';
 dotenv.config();
 const app = express();
 
@@ -30,3 +34,7 @@ db.connect((err) => {
     });
 });
 app.use('/api/auth', authRoutes);
+app.use('/api/complaints', complaintRoutes);
+app.use('/api/agencies', agencyRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/stats', statsRoutes);
